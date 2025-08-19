@@ -1,8 +1,8 @@
 import api from "./api";
-import TokenService from "./token.servise";
+import TokenService from "./token.service";
 
 const API_URL = import.meta.env.VITE_AUT_API;
-console.log(API_URL)
+// console.log(API_URL);
 
 const register = async (username, fullName, email, password) => {
   return await api.post(API_URL + "/signup", {
@@ -28,10 +28,10 @@ const logout = () => {
   TokenService.removeUser();
 };
 
-const AuthServise = {
+const AuthService = {
   register,
   login,
   logout,
 };
 
-export default AuthServise;
+export default AuthService;

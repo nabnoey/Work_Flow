@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseURL = import.meta.env.VITE_BASE_URL;
-import TokenService from "./token.servise";
+import TokenService from "./token.service";
 
 const instance = axios.create({
   baseURL: baseURL,
