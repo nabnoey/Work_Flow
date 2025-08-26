@@ -1,8 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "./db.js";
 
-
-const Restaurant = sequelize.define("restaurant", {
+const Restaurant = sequelize.define("restaurants", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
