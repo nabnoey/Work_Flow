@@ -11,7 +11,7 @@ export default {
   pool: {
     max: 5, //จำนวน connection สูงสุดที่อนุญาตใน pool
     min: 0,
-    acquire: 30000, //เวลาสูงสุด (มิลลิวินาที) ที่ Sequelize จะรอเพื่อรับ connection ก่อนจะเกิด error (30000 ms = 30 วินาที)
-    idle: 10000, // เวลาที่ connection จะว่าง (idle) ก่อนจะถูกปิด (10000 ms = 10 วินาที)
+    acquire: 30000,//เวลาสูงสุด (มิลลิวินาที) ที่ Sequelize จะรอเพื่อรับ connection ก่อนจะเกิด error (30000 ms = 30 วินาที)
+    idle: 10000,// เวลาที่ connection จะว่าง (idle) ก่อนจะถูกปิด (10000 ms = 10 วินาที)
   },
 };
