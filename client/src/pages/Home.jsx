@@ -83,35 +83,7 @@ const Home = () => {
 </div>
 
 
-      {/* Search Box */}
-      <div className="mb-10 flex justify-center">
-        <label className="input flex items-center gap-2 w-full max-w-2xl">
-          <svg
-            className="h-5 opacity-50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2.5"
-              fill="none"
-              stroke="currentColor"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </g>
-          </svg>
-          <input
-            type="search"
-            name="keyword"
-            onChange={(e) => handleSearch(e.target.value)}
-            required
-            placeholder="Search restaurants..."
-            className="flex-1 outline-none bg-white bg-opacity-30 placeholder-white text-white px-3 py-2 rounded-md"
-          />
-        </label>
-      </div>
+     
 
      {/* Recommended Fruits Title */}
 <div className="text-center mb-8">
