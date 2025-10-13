@@ -42,13 +42,12 @@ const Register = () => {
         });
       }
     } catch (error) {
-  console.error("Error during registration:", error);
-  Swal.fire({
-    icon: "error",
-    title: "สมัครสมาชิกไม่สำเร็จ",
-    text: error?.response?.data?.message || error.message,
-  });
-}
+      Swal.fire({
+        icon: "error",
+        title: "สมัครสมาชิกไม่สำเร็จ",
+        text: error?.response?.data?.message || error.message,
+      });
+    }
   };
 
   return (

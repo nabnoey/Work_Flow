@@ -1,18 +1,29 @@
 import axios from "axios";
-import TokenService from "./token.service.js";
+import TokenService from "./token.service";
+const baseURL = import.meta.env.VITE_BASE_URL; 
+
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
-  headers: { "Content-Type": "application/json" },
+  baseURL: baseURL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
+// Add interceptor to request object
 instance.interceptors.request.use(
   (config) => {
-    const token = TokenService.getToken();
-    if (token) config.headers["Authorization"] = `Bearer ${token}`;
+    // Get the token and check if it exists
+    const token = TokenService.getLocalAccessToken();
+    if (token) {
+      // Encode the token before setting the header to handle special characters
+      config.headers["x-access-token"] = token;
+    }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 export default instance;

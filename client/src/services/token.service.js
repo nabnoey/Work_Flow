@@ -1,27 +1,26 @@
-const getUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+const getUser = () =>{
+    return JSON.parse(localStorage.getItem("user"))
 };
 
-const setUser = (user) => {
-  localStorage.setItem("user", JSON.stringify(user));
+const setUser  = (user) =>{
+    //เก็บข้อมูล user
+    localStorage.setItem("user",JSON.stringify(user))
 };
 
-const getLocalAccessToken = () => {
-  const user = getUser();
-  return user?.token;
+const getLocalAccessToken = () =>{
+    const user = getUser();
+    return user?.token; //ป้องกัน an defind
 };
 
-//เป็น Private
-const removeUser = () => {
-  localStorage.removeItem("user");
+//private
+const removeUser = () =>{
+    localStorage.removeItem("user")
 };
 
-// เป้ฯ Public
 const TokenService = {
-  getLocalAccessToken,
-  getUser,
-  setUser,
-  removeUser,
+    getLocalAccessToken,
+    getUser,
+    setUser,
+    removeUser,
 };
-
 export default TokenService;
