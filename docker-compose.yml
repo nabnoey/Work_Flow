@@ -1,29 +1,29 @@
 services:
-  server:
-    build:
-      # บอกตำแหน่งของฝั่ง server แลพ docker ไฟล์ข้างในนั้น
-      context: ./server
-      dockerfile: Dockerfile.server
-    ports:
-      - "5001:5001"
-    volumes:
-      - "./server:/app"
-      # เข้าถึงตัว node module ได้
-      - "/app/node_modules"
-    command: nodemon --legacy-watch index.js
-    restart:
-      always
-      #postgres ทำทั้งหมดให้รู้จักกัน โดยไม่ต้องระบุหมายเลข IP
-      #username:password หลัง @ location db port:5432 หลัง / name db
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5434/app_db
-      - HOST=db
-      - USER=postgres
-      - DB=app_db
-      - DB_PORT=5434
-      - SERVER_PORT=5001
-    depends_on:
-      - db
+  # server:
+  #   build:
+  #     # บอกตำแหน่งของฝั่ง server แลพ docker ไฟล์ข้างในนั้น
+  #     context: ./server
+  #     dockerfile: Dockerfile.server
+  #   ports:
+  #     - "5001:5001"
+  #   volumes:
+  #     - "./server:/app"
+  #     # เข้าถึงตัว node module ได้
+  #     - "/app/node_modules"
+  #   command: nodemon --legacy-watch index.js
+  #   restart:
+  #     always
+  #     #postgres ทำทั้งหมดให้รู้จักกัน โดยไม่ต้องระบุหมายเลข IP
+  #     #username:password หลัง @ location db port:5432 หลัง / name db
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:postgres@db:5434/app_db
+  #     - HOST=db
+  #     - USER=postgres
+  #     - DB=app_db
+  #     - DB_PORT=5434
+  #     - SERVER_PORT=5001
+  #   depends_on:
+  #     - db
 
   client:
     build:
@@ -41,20 +41,20 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
     # รอ server เสร็จก่อน
-    depends_on:
-      - server
+    # depends_on:
+    #   - server
 
-  # database
-  db:
-    image: postgres:16
-    restart: always
-    ports:
-      - "5434:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=app_db
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-volumes:
-  pgdata:
+#   # database
+#   db:
+#     image: postgres:16
+#     restart: always
+#     ports:
+#       - "5434:5432"
+#     environment:
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=postgres
+#       - POSTGRES_DB=app_db
+#     volumes:
+#       - pgdata:/var/lib/postgresql/data
+# volumes:
+#   pgdata:

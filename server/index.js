@@ -16,14 +16,22 @@ app.use(express.urlencoded({ extended: true }));
 
 import db from "./models/index.js";
 const Role = db.Role;
-// const initRole = () => {
-//   Role.create({ id: 1, roleName: "user" });
-//   Role.create({ id: 2, roleName: "moderator" });
-//   Role.create({ id: 3, roleName: "admin" });
-// };
-// db.sequelize.sync({ force: false }).then(() => {
-//   initRole();
-// });
+// ✅ เชื่อมต่อ database
+db.sequelize.sync({ force: false }).then(async () => {
+  console.log("Database synced successfully");
+  try {
+    const count = await db.Role.count();
+    if (count === 0) {
+      await db.Role.bulkCreate([
+        { id: 1, roleName: "user" },
+        { id: 2, roleName: "admin" },
+      ]);
+      console.log("Seeded default roles");
+    }
+  } catch (e) {
+    console.error("Error seeding roles:", e?.message || e);
+  }
+});
 
 db.sequelize.sync({ force: false }).then(() => {
   console.log("create table user_roles");
