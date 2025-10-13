@@ -23,9 +23,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const getAllRestaurant = async () => {
+    const getAllRestaurants = async () => {
       try {
-        const response = await restaurantService.getAllRestaurant();
+        const response = await restaurantService.getAllRestaurants();
         if (response.status === 200) {
           // 🔽 จัดเรียงชื่อเมนูตามตัวอักษรไทย ก-ฮ
           const sorted = response.data.sort((a, b) =>
@@ -42,7 +42,7 @@ const Home = () => {
         });
       }
     };
-    getAllRestaurant();
+    getAllRestaurants();
   }, []);
 
   return (

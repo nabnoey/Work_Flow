@@ -1,146 +1,148 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
-import restaurantService from "../services/restaurant.service";
+import { useParams, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import restaurantService from "../services/restaurant.service";
 
 const Update = () => {
-  //Get ID from URL
   const { id } = useParams();
-  const [restaurants, setRestaurant] = useState({
+  const navigate = useNavigate();
+
+  const [restaurant, setRestaurant] = useState({
     title: "",
     type: "",
     imageUrl: "",
   });
 
-useEffect(() => {
-  const fetchRestaurant = async () => {
-    try {
-      
-      const response = await restaurantService.getRestaurantById(id);
-
-      if (response.status === 200) {
-        setRestaurant(response.data);
-      } else {
-       
+  // Fetch restaurant by ID
+  useEffect(() => {
+    const fetchRestaurant = async () => {
+      try {
+        const response = await restaurantService.getRestaurantById(id);
+        if (response.status === 200) {
+          setRestaurant(response.data);
+        } else {
+          Swal.fire({
+            title: "Restaurant Not Found",
+            text: `No restaurant found with ID: ${id}`,
+            icon: "error",
+          });
+        }
+      } catch (error) {
         Swal.fire({
-          title: "Restaurant Not Found",
+          title: "Error fetching restaurant",
+          text: "Could not retrieve restaurant data.",
           icon: "error",
-          text: `No restaurant found with ID: ${id}`,
         });
+        console.error(error);
+      }
+    };
+
+    fetchRestaurant();
+  }, [id]);
+
+  // Handle input change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setRestaurant({ ...restaurant, [name]: value });
+  };
+
+  // Submit update
+  const handleSubmit = async () => {
+    try {
+      const response = await restaurantService.editRestaurantById(id, restaurant);
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Restaurant Updated Successfully",
+          text: "Success",
+          icon: "success",
+        });
+        navigate("/"); // redirect to home
       }
     } catch (error) {
+      console.error(error);
       Swal.fire({
-        title: "Error fetching restaurant",
+        title: "Error Updating Restaurant",
+        text: error.message || "Something went wrong",
         icon: "error",
-        text: "Could not retrieve restaurant data.",
       });
     }
   };
-  fetchRestaurant();
-}, [id]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRestaurant({ ...restaurants, [name]: value });
+  // Render image safely (local or hosted URL)
+  const renderImage = (img) => {
+    if (!img) return null;
+    const src = img.startsWith("http") ? img : `/images/${img}`; // local fallback
+    return <img className="h-32" src={src} alt="Restaurant" />;
   };
-  const handleSubmit = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/v1/restaurants/" + id,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(restaurants),
-        }
-      );
-      if (response.ok) {
-        alert("Restaurant Updated succesfully!!!");
-        setRestaurant({
-          title: "",
-          type: "",
-          imageUrl: "",
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   return (
     <div className="container mx-auto">
-      <div class="relative flex flex-col justify-center h-screen overflow-hidden">
-        <div class="w-full p-6 m-auto bg-white rounded-md shadow-md ring-2 ring-gray-800/50 lg:max-w-lg">
-          <h1 class="text-2xl font-semibold text-center text-gray-700 mb-6">
+      <div className="relative flex flex-col justify-center h-screen overflow-hidden">
+        <div className="w-full p-6 m-auto bg-white rounded-md shadow-md ring-2 ring-gray-800/50 lg:max-w-lg">
+          <h1 className="text-2xl font-semibold text-center text-gray-700 mb-6">
             Update Item
           </h1>
-          <form class="space-y-4">
+          <form className="space-y-4">
             <div>
-              <label class="label">
-                <span class="text-base label-text">Title</span>
+              <label className="label">
+                <span className="text-base label-text">Title</span>
               </label>
-
               <input
                 type="text"
                 name="title"
-                value={restaurants.title}
+                value={restaurant.title}
                 placeholder="Enter title"
-                class="w-full input input-bordered"
+                className="w-full input input-bordered"
                 onChange={handleChange}
               />
             </div>
 
             <div>
-              <label class="label">
-                <span class="text-base label-text">Type</span>
+              <label className="label">
+                <span className="text-base label-text">Type</span>
               </label>
               <input
                 type="text"
-                placeholder="Enter type"
-                class="w-full input input-bordered"
                 name="type"
-                value={restaurants.type}
+                value={restaurant.type}
+                placeholder="Enter type"
+                className="w-full input input-bordered"
                 onChange={handleChange}
               />
             </div>
 
             <div>
-              <label class="label">
-                <span class="text-base label-text">Image URL</span>
+              <label className="label">
+                <span className="text-base label-text">Image URL</span>
               </label>
               <input
                 type="text"
-                ClassName="grow"
-                class="w-full input input-bordered"
-                onChange={handleChange}
+                name="imageUrl"
+                value={restaurant.imageUrl}
                 placeholder="Restaurant Img"
-                value={restaurants.imageUrl}
-                name="img"
+                className="w-full input input-bordered grow"
+                onChange={handleChange}
               />
-
-              {restaurants.imageUrl && (
-                <div ClassName="flex items-center gap-2">
-                  <img ClassName="h-32" src={restaurants.imageUrl}></img>
-                </div>
-              )}
+              <div className="flex items-center gap-2 mt-2">
+                {renderImage(restaurant.imageUrl)}
+              </div>
             </div>
 
-            <div class="flex justify-center items-center my-6 space-x-4">
-              <a
-                href={"/"}
-                type="submit"
-                class="btn bg-green-500 text-white px-6"
+            <div className="flex justify-center items-center my-6 space-x-4">
+              <button
+                type="button"
+                className="btn bg-green-500 text-white px-6"
                 onClick={handleSubmit}
               >
                 Update
-              </a>
-              <a
-                href={"/"}
+              </button>
+              <button
                 type="button"
-                class="btn bg-red-500 text-white px-6"
+                className="btn bg-red-500 text-white px-6"
+                onClick={() => navigate("/")}
               >
                 Cancel
-              </a>
+              </button>
             </div>
           </form>
         </div>
@@ -148,4 +150,5 @@ useEffect(() => {
     </div>
   );
 };
+
 export default Update;

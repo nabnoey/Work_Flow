@@ -34,11 +34,12 @@ app.get("/", (req, res) => {
 
 app.use(
   cors({
-    oring: ["http://localhost:5173", "127.0.0.1:5173"],
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Athorization, x-access-token"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],
   })
 );
+
 
 // use restaurant router
 app.use("/api/v1/restaurants", restaurantRouter);

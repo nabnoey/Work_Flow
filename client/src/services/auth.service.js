@@ -1,11 +1,13 @@
 import api from "./api";
-import TokenService from "./token.service";
+import TokenService from "./token.service.js";
 
-const API_URL = import.meta.env.VITE_AUT_API;
-// console.log(API_URL);
+// auth.service.js
+const API_URL = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_AUT_API;
+// POST /register
+
 
 const register = async (username, fullName, email, password) => {
-  return await api.post(API_URL + "/signup", {
+  return api.post(API_URL + "/register", {
     username,
     fullName,
     email,
@@ -15,11 +17,10 @@ const register = async (username, fullName, email, password) => {
 
 const login = async (username, password) => {
   const response = await api.post(API_URL + "/signin", { username, password });
-  //save uer data to local storage
+  //saveing user data to local storage
   if (!response.data.token) {
     return response;
   }
-
   TokenService.setUser(response.data);
   return response;
 };

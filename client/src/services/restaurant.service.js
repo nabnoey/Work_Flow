@@ -1,41 +1,30 @@
-
 import api from "./api";
 
 const RESTO_API = import.meta.env.VITE_RESTO_API;
 
+// GET all restaurants
+const getAllRestaurants = async () => await api.get(`${RESTO_API}`);
 
+// GET by ID
+const getRestaurantById = async (id) => api.get(`${RESTO_API}/${id}`);
 
-//get all restaurant
-const getAllRestaurant = async () => {
-  return await api.get(RESTO_API);
-};
-//get byid
+// UPDATE by ID
+const editRestaurantById = async (id, restaurant) =>
+  api.put(`${RESTO_API}/${id}`, restaurant);
 
-const getRestaurantById = async (id) => {
-  return await api.get(`${RESTO_API}/${id}`);
-};
+// ADD new restaurant
+const insertRestaurant = async (restaurant) =>
+  api.post(`${RESTO_API}`, restaurant);
 
-//update byid
-
-const editRestaurantById = async (id, restaurant) => {
-  return await api.put(`${RESTO_API}/${id}`, restaurant);
-};
-
-//add restaurant
-
-const insertRestaurant = async (restaurant) => {
-  return await api.post(RESTO_API, restaurant);
-};
-
+// DELETE by ID
 const deleteRestaurant = async (id) => api.delete(`${RESTO_API}/${id}`);
-//delete restaurant
 
 const restaurantService = {
-  getAllRestaurant,
+  getAllRestaurants,
   getRestaurantById,
   editRestaurantById,
-  deleteRestaurant,
   insertRestaurant,
+  deleteRestaurant,
 };
 
 export default restaurantService;
